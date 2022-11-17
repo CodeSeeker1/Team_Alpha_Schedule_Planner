@@ -1,3 +1,10 @@
+TITLE = "main.py 1.00 2022/11/17"
+"""
+This file will execute Team Alpha's scheduling program.
+
+Currently contains rudimentary tests.
+"""
+
 import Event_class
 
 def main():
