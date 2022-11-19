@@ -13,7 +13,7 @@ import Event_class
 
 #---------------------------------------------------------
 # Comparisons, may move to class
-def dateToInt (event):
+def dateToInt(event):
     """
     Passed an Event_Schedule obj and returns an integer
     with the year, month, day, hour, and minute.
@@ -43,23 +43,79 @@ def later(lEvent, rEvent):
     return dateToInt(lEvent) > dateToInt(rEvent)
 
 #--------------------------------------------------------
-# Adding, subtracting, searching, updating
+# Adding, searching, deleting and updating
+def addEvent(elist, event):
+    """
+    elist is a list of events, event is an Event_Schedule obj.
+    Adds event object to list and sorts it based on date and time.
+    """
+    elist.append(event)
+    elist.sort(key=dateToInt)
 
+def findTime(elist, key):
+    """
+    elist is a list of events and key is the time 
+    integer of the event.
+    It is assumed elist is sorted by date and time.
+
+    Returns the index of the matching time.
+
+    Planning to modify it to return a list of indices, in
+    case several events have the same name or time.
+    """
+    x = "donothing"
+
+
+def findName(elist, key):
+    """
+    elist is a list of events and key is the string of
+    the event name.
+    It is assumed elist is sorted by date and time.
+
+    Returns the index of the matching string.
+
+    Planning to modify it to return a list of indices, in
+    case several events have the same name or time.
+    """
+    l = elist.copy()
+    x = "donothing"
+
+#--------------------------------------------------------
+# Testing
 if __name__ == '__main__':
     print(TITLE)
 
-    # Testing
-
+    l = []
     e = Event_class.Event_Schedule("Class", 2022, 11, 19, 14, 20, "Hell in a handbasket")
     v = Event_class.Event_Schedule("Vacay", 2022, 11, 21, 12, 20, "Cya l8r losers")
     n = Event_class.Event_Schedule("Board", 2022, 11, 21, 12, 20, "Be early")
     t = Event_class.Event_Schedule("Wakup", 2022, 11, 21,  7, 30, "Bacon 4 brkfst")
     
-    print("\nTesting dateToInt:")
+    print()
+
+    print("Testing dateToInt:")
     print(dateToInt(e))
 
-    print("\nTesting comparisons:")
+    print()
+
+    print("Testing comparisons:")
     print(earlier(e, v), equals(e, v), later(e, v))
     print(earlier(v, n), equals(v, n), later(v, n))
     print(earlier(n, t), equals(n, t), later(n, t))
+
+    print()
+
+    print("Testing addEvent:")
+    addEvent(l, v)
+    addEvent(l, e)
+    addEvent(l, n)
+    addEvent(l, t)
+    for i in range(len(l)):
+        print(l[i].event_name)
+    
+    print()
+
+    print("Testing findTime")
+    
+
 
