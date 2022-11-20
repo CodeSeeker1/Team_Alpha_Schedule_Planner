@@ -38,3 +38,7 @@ function fileUpload() {
     // send file data to python
     return eventObj;
 }
+
+function fileDownload(eventObj) {   
+var csv = Papa.unparse(eventObj);
+}
