@@ -9,7 +9,10 @@
 
     <!-- upload buttons -->
     <input type="file" id="uploadfile" accept=".csv">
-    <button id="test" type="button" py-onClick="fileDownload()">Send to Python</button>
+    <button id="test" type="button" py-onClick="fileUpload()">Send to Python</button>
+
+    <!-- download button -->
+    <button id="test" type="button" py-onClick="fileDownload()">file download</button>
 
     <!-- csv parser -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
@@ -24,12 +27,16 @@
         import js
         #import asyncio
 
-        def fileDownload():
+        def fileUpload():
             eventsData = js.fileUpload().to_py()
             Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
             displayEvents(eventsData)
+            fileDownload(eventsData)
 
-        def displayEvents(eventsData):
+        def fileDownload(eventsData):
+            js.fileDownload(eventsData)
+
+        def displayEvents(eventsData): #can just be done in class
         
             for i in range(len(eventsData)):
                 #div container for event divs
