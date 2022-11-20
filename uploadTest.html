@@ -11,9 +11,6 @@
     <input type="file" id="uploadfile" accept=".csv">
     <button id="test" type="button" py-onClick="fileUpload()">Send to Python</button>
 
-    <!-- download button -->
-    <button id="test" type="button" py-onClick="fileDownload()">file download</button>
-
     <!-- csv parser -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
     <script src="fileManagement.js"></script>
@@ -31,7 +28,6 @@
             eventsData = js.fileUpload().to_py()
             Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
             displayEvents(eventsData)
-            fileDownload(eventsData)
 
         def fileDownload(eventsData):
             js.fileDownload(eventsData)
