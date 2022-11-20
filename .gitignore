@@ -16,3 +16,5 @@
 *.dat
 *password*
 *.httr-oauth*
+
+__pycache__/
