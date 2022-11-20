@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>uploadTest</title>
+
+    <!-- pyscript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <!-- upload buttons -->
+    <input type="file" id="uploadfile" accept=".csv">
+    <button id="test" type="button" py-onClick="fileDownload()">Send to Python</button>
+
+    <!-- csv parser -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="fileManagement.js"></script>
+
+</head>
+<body>
+
+    <div id="events"></div> <!-- container for event divs -->
+
+    <py-script>
+        import js
+        #import asyncio
+
+        def fileDownload():
+            eventsData = js.fileUpload().to_py()
+            Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
+            displayEvents(eventsData)
+
+        def displayEvents(eventsData):
+        
+            for i in range(len(eventsData)):
+                #div container for event divs
+                event = document.createElement("div")
+                event.className = "event"
+
+                #event number div
+                eventNumber = document.createElement("div"); 
+                eventNumber.className = "eventNumber"
+                eventNumber.innerHTML += "#" + str(i+1)
+                event.appendChild(eventNumber)
+
+                #event name div
+                eventName = document.createElement("div"); 
+                eventName.className = "eventName"
+                eventName.innerHTML += eventsData[i]['name']
+                event.appendChild(eventName)
+
+                #event name div
+                eventDetails = document.createElement("div"); 
+                eventDetails.className = "eventDetails"
+                eventDetails.innerHTML += eventsData[i]['details']
+                event.appendChild(eventDetails)
+
+                #displays event
+                document.getElementById('events').appendChild(event)
+    
+    </py-script>
+
+</body>
+</html>
