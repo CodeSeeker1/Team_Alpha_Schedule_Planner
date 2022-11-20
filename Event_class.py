@@ -49,6 +49,22 @@ class Event_Schedule():
         result = end_date-start_date
         return result
 
+    def dateToInt(self):
+
+        """
+        Passed an Event_Schedule obj and returns an integer
+        with the year, month, day, hour, and minute.
+        Ex. Nov 19, 2022 12:33pm becomes: 202211191233
+        Used for date and time comparison.
+        """
+        date = self.get_date()
+        time = self.get_time()
+
+        integer =  date[0] * 100000000 + date[1] * 1000000 + date[2] * 10000
+        integer += time[0] * 100 + time[1]
+
+        return integer
+
     def writedata(self,filename):
         yr,mon,day = self.get_date()
         hr,min = self.get_time()
