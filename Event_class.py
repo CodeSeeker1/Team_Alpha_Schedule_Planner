@@ -1,4 +1,4 @@
-#This is the event_Schedule class created by Ayub
+#This is a test file to test stuff for event_Schedule class before pushing
 
 class Event_Schedule():
 
@@ -12,14 +12,13 @@ class Event_Schedule():
         self.time = {"Hour":hour,"Minutes":minute}
         self.event_detail = details
         self.event_timeleft = self.calculate_time_left()
-        self.starttime = start_time
-        self.endtime = end_time
+        self.starttime = self.get_start_time()
+        self.endtime = self.get_end_time()
         
     def get_event_name(self):
         return(self.event_name)
 
     def get_date(self):
-
         yr = self.date["year"]
         mon = self.date["month"]
         day = self.date["day"]
@@ -29,10 +28,22 @@ class Event_Schedule():
         return (self.event_detail)
     
     def get_time(self):
-        h = self.time["Hour"]
-        m = self.time["Minutes"]
+        hour = self.time["Hour"]
+        min = self.time["Minutes"]
 
-        return h,m
+        return hour,min
+
+    def get_start_time(self):
+        start_hour = self.time["Hour"]
+        start_min = self.time["Minutes"]
+
+        return start_hour,start_min
+
+    def get_end_time(self):
+        end_hour = self.time["Hour"]
+        end_min = self.time["Minutes"]
+
+        return end_hour,end_min
 
     def calculate_time_left(self):
         """
@@ -54,10 +65,11 @@ class Event_Schedule():
     def dateToInt(self):
 
         """
-        Passed an Event_Schedule obj and returns an integer
-        with the year, month, day, hour, and minute.
+        returns an integer with the year, month, day, hour, and minute.
         Ex. Nov 19, 2022 12:33pm becomes: 202211191233
         Used for date and time comparison.
+
+        Contributed by Brant
         """
         date = self.get_date()
         time = self.get_time()
@@ -70,16 +82,19 @@ class Event_Schedule():
     def write_dict(self):
         yr,mon,day = self.get_date()
         hr,min = self.get_time()
+        start_hr,start_min = self.get_start_time()
+        end_hr,end_min = self.get_end_time()
         event_name = "{}".format(self.event_name)
         date = "{}-{}-{}".format(yr,mon,day)
         time = "\nEvent Time: {}:{}".format(hr,min)
-        start_time = "\n Start Event: {}:{}".format(hr,min)
-        end_time = "\n End Event: {}:{}".format(hr,min)
+        start_time = "\n Start Event: {}:{}".format(start_hr,start_min)
+        end_time = "\n End Event: {}:{}".format(end_hr,end_min)
         time_left = "\nTime Left before Event starts: {}".format(self.event_timeleft)
         detail = "\nDetail: {}\n".format(self.event_detail)
 
         #dictionary format
         event_dict = {"Event Name":event_name,"Date":date,"Time":time,"Start Time":start_time,"End Time":end_time,"Time Left":time_left,"Detail":detail}
+
 
         return event_dict
 
