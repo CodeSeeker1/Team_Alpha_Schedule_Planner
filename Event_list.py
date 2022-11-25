@@ -61,7 +61,6 @@ def findTime(elist, key):
         if elist[i].dateToInt == key:
             return i
 
-
 def findName(elist, key):
     """
     elist is a list of events.
@@ -81,15 +80,26 @@ def findName(elist, key):
 def eventToDict(event):
     '''
     Turns an event object into a dictionary. 
-    Used to create a dictionary for file writing.
+    Returns the dictionary.
     '''
     date = event.get_date()
     time = event.get_time()
 
-    dictionary = {'name':event.name, 'year':date[0], 'month':date[1], 'day':date[2], \
-                  'hour':time[0],'minute':time[1], 'details':event.details}
+    dictionary = {'name':event.get_event_name(), 'year':date[0], 'month':date[1], 'day':date[2], \
+                  'hour':time[0],'minute':time[1], 'details':event.get_details()}
 
     return dictionary
+
+def dictToEvent(d):
+    '''
+    Turns a dictionary into an event object.
+    Returns the event object.
+    '''
+
+    event = Event_class.Event_Schedule(d['name'], d['year'], d['month'], d['day'], d['hour'], \
+                                       d['minute'], d['details'])
+
+    return event
 
 #--------------------------------------------------------
 # Testing
@@ -122,7 +132,13 @@ if __name__ == '__main__':
     
     print()
 
-    print("Testing findTime")
-    
+    print("Testing eventToDict")
+    diction = eventToDict(e)
+    print(diction)
+
+    print("Testing dictToEvent")
+    diction['name'] = 'Midterm'
+    event = dictToEvent(diction)
+    print(event.get_event_name(), event.get_date(), event.get_time(), event.get_details())
 
 
