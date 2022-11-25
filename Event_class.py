@@ -1,4 +1,4 @@
-#This is a test file to test stuff for event_Schedule class before pushing
+#This is the event_Schedule class created by Ayub
 
 class Event_Schedule():
 
