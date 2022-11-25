@@ -13,72 +13,83 @@ import Event_class
 
 #---------------------------------------------------------
 # Comparisons, may move to class
-def dateToInt(event):
-    """
-    Passed an Event_Schedule obj and returns an integer
-    with the year, month, day, hour, and minute.
 
-    Ex. Nov 19, 2022 12:33pm becomes: 202211191233
-
-    Used for date and time comparison.
-    """
-    date = event.get_date()
-    time = event.get_time()
-
-    integer =  date[0] * 100000000 + date[1] * 1000000 + date[2] * 10000
-    integer += time[0] * 100 + time[1]
-
-    return integer
+def sort_dateToInt(event):
+    "Returns the datToInt of event. Used for sorting"
+    return event.dateToInt()
 
 def earlier(lEvent, rEvent):
     "Returns True if lEvent is before rEvent"
-    return dateToInt(lEvent) < dateToInt(rEvent)
+    return lEvent.dateToInt() < rEvent.dateToInt()
 
 def equals(lEvent, rEvent):
     "Returns True if lEvent happens at the same time as rEvent"
-    return dateToInt(lEvent) == dateToInt(rEvent)
+    return lEvent.dateToInt() == rEvent.dateToInt()
 
 def later(lEvent, rEvent):
     "Returns True if lEvent is after rEvent"
-    return dateToInt(lEvent) > dateToInt(rEvent)
+    return lEvent.dateToInt() > rEvent.dateToInt()
 
 #--------------------------------------------------------
 # Adding, searching, deleting and updating
-def addEvent(elist, event):
+def addEvent(elist,name,year,month,day,hour,minute,details):
     """
-    elist is a list of events, event is an Event_Schedule obj.
+    elist is a list of events. 
+    Other parameters correspond to the parameters of an Event_Schedule object. 
+    Will add error checking for each parameter!
+
     Adds event object to list and sorts it based on date and time.
+    returns index of event object.
     """
+    event = Event_class.Event_Schedule(name,year,month,day,hour,minute,details)
     elist.append(event)
-    elist.sort(key=dateToInt)
+    elist.sort(key=sort_dateToInt)
+
+    return findName(elist, name)
 
 def findTime(elist, key):
     """
-    elist is a list of events and key is the time 
-    integer of the event.
+    elist is a list of events.
+    key is the time integer of the event.
     It is assumed elist is sorted by date and time.
 
     Returns the index of the matching time.
 
-    Planning to modify it to return a list of indices, in
-    case several events have the same name or time.
+    May build a more efficient binary search if time permits.
     """
-    x = "donothing"
+    for i in range(len(elist)):
+        if elist[i].dateToInt == key:
+            return i
 
 
 def findName(elist, key):
     """
-    elist is a list of events and key is the string of
-    the event name.
+    elist is a list of events.
+    key is the time integer of the event.
     It is assumed elist is sorted by date and time.
 
-    Returns the index of the matching string.
+    Returns the index of the matching time.
 
-    Planning to modify it to return a list of indices, in
-    case several events have the same name or time.
+    May build a more efficient binary search if time permits.
     """
-    l = elist.copy()
-    x = "donothing"
+    for i in range(len(elist)):
+        if elist[i].event_name == key:
+            return i
+
+#--------------------------------------------------------
+# File communication
+def eventToDict(event):
+    '''
+    Turns an event object into a dictionary. 
+    Used to create a dictionary for file writing.
+    '''
+    date = event.get_date()
+    time = event.get_time()
+
+    dictionary = {'name':event.name, 'year':date[0], 'month':date[1], 'day':date[2], \
+                  'hour':time[0],'minute':time[1], 'details':event.details}
+
+    return dictionary
 
 #--------------------------------------------------------
 # Testing
@@ -86,15 +97,15 @@ if __name__ == '__main__':
     print(TITLE)
 
     l = []
-    e = Event_class.Event_Schedule("Class", 2022, 11, 19, 14, 20, "Hell in a handbasket")
-    v = Event_class.Event_Schedule("Vacay", 2022, 11, 21, 12, 20, "Cya l8r losers")
-    n = Event_class.Event_Schedule("Board", 2022, 11, 21, 12, 20, "Be early")
-    t = Event_class.Event_Schedule("Wakup", 2022, 11, 21,  7, 30, "Bacon 4 brkfst")
+    e = l[addEvent(l, "Class", 2022, 11, 19, 14, 20, "Hell in a handbasket")]
+    v = l[addEvent(l, "Vacay", 2022, 11, 21, 12, 20, "Cya l8r losers")]
+    n = l[addEvent(l, "Board", 2022, 11, 21, 12, 20, "Be early")]
+    t = l[addEvent(l, "Wakup", 2022, 11, 21,  7, 30, "Bacon 4 brkfst")]
     
     print()
 
     print("Testing dateToInt:")
-    print(dateToInt(e))
+    print(e.dateToInt())
 
     print()
 
@@ -106,10 +117,6 @@ if __name__ == '__main__':
     print()
 
     print("Testing addEvent:")
-    addEvent(l, v)
-    addEvent(l, e)
-    addEvent(l, n)
-    addEvent(l, t)
     for i in range(len(l)):
         print(l[i].event_name)
     
