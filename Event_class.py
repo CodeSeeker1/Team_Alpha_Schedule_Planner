@@ -2,7 +2,7 @@
 
 class Event_Schedule():
 
-    def __init__(self,name,year,month,day,hour,minute,details):
+    def __init__(self,name,year,month,day,hour,minute,start_time,end_time,details):
         """
         The contructor
         purpose: Create a Event instance
@@ -12,6 +12,8 @@ class Event_Schedule():
         self.time = {"Hour":hour,"Minutes":minute}
         self.event_detail = details
         self.event_timeleft = self.calculate_time_left()
+        self.starttime = start_time
+        self.endtime = end_time
         
     def get_event_name(self):
         return(self.event_name)
@@ -65,23 +67,21 @@ class Event_Schedule():
 
         return integer
 
-    def writedata(self,filename):
+    def write_dict(self):
         yr,mon,day = self.get_date()
         hr,min = self.get_time()
-        event_name = "Event Name: {}".format(self.event_name)
-        date = "\nEvent Date: {}-{}-{}".format(yr,mon,day)
+        event_name = "{}".format(self.event_name)
+        date = "{}-{}-{}".format(yr,mon,day)
         time = "\nEvent Time: {}:{}".format(hr,min)
+        start_time = "\n Start Event: {}:{}".format(hr,min)
+        end_time = "\n End Event: {}:{}".format(hr,min)
         time_left = "\nTime Left before Event starts: {}".format(self.event_timeleft)
         detail = "\nDetail: {}\n".format(self.event_detail)
-        
-        #open the file and appends the data
-        fn= open(filename,"a")
-        fn.write(event_name)
-        fn.write(date)
-        fn.write(time)
-        fn.write(time_left)
-        fn.write(detail)
-        fn.close()
+
+        #dictionary format
+        event_dict = {"Event Name":event_name,"Date":date,"Time":time,"Start Time":start_time,"End Time":end_time,"Time Left":time_left,"Detail":detail}
+
+        return event_dict
 
     
   
