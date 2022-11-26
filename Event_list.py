@@ -16,7 +16,7 @@ import Event_class
 
 def sort_dateToInt(event):
     "Returns the datToInt of event. Used for sorting"
-    return event.dateToInt()
+    return str(event.dateToInt())
 
 def earlier(lEvent, rEvent):
     "Returns True if lEvent is before rEvent"
@@ -114,10 +114,10 @@ if __name__ == '__main__':
     print(TITLE)
 
     l = []
-    e = l[addEvent(l, "Class", 2022, 11, 19, 14, 20, "Hell in a handbasket")]
-    v = l[addEvent(l, "Vacay", 2022, 11, 21, 12, 20, "Cya l8r losers")]
-    n = l[addEvent(l, "Board", 2022, 11, 21, 12, 20, "Be early")]
-    t = l[addEvent(l, "Wakup", 2022, 11, 21,  7, 30, "Bacon 4 brkfst")]
+    e = l[addEvent(l, "Class", '2022', '11', '19', '14', '20', "Hell in a handbasket")]
+    v = l[addEvent(l, "Vacay", '2022', '11', '21', '12', '20', "Cya l8r losers")]
+    n = l[addEvent(l, "Board", '2022', '11', '21', '12', '00', "Be early")]
+    t = l[addEvent(l, "Wakup", '2022', '11', '21', '07', '30', "Bacon 4 brkfst")]
     
     print()
 
@@ -137,6 +137,9 @@ if __name__ == '__main__':
     for i in range(len(l)):
         print(l[i].event_name)
     
+    print(sort_dateToInt(e))
+    print(sort_dateToInt(t))
+
     print()
 
     print("Testing eventToDict")
