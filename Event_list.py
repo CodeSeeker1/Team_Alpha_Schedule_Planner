@@ -31,8 +31,8 @@ def later(lEvent, rEvent):
     return lEvent.dateToInt() > rEvent.dateToInt()
 
 #--------------------------------------------------------
-# Adding, searching, deleting and updating
-def addEvent(elist,name,year,month,day,hour,minute,details):
+# Adding, searching, deleting and editing
+def addEvent(elist, name, date, time, details):
     """
     elist is a list of events. 
     Other parameters correspond to the parameters of an Event_Schedule object. 
@@ -41,11 +41,46 @@ def addEvent(elist,name,year,month,day,hour,minute,details):
     Adds event object to list and sorts it based on date and time.
     returns index of event object.
     """
-    event = Event_class.Event_Schedule(name,year,month,day,hour,minute,details)
+    year, month, day = date.split("-")
+    hour, minute = time.split(":")
+
+    try:
+        event = Event_class.Event_Schedule(name,year,month,day,hour,minute,details)
+    
+    except:
+        return -1
+
     elist.append(event)
     elist.sort(key=sort_dateToInt)
 
-    return findName(elist, name)
+    return elist.index(event)
+
+def edit(elist, event, name, date, time, details):
+
+    if event not in elist:
+        return False
+    
+    i = elist.index(event)
+
+    year, month, day = date.split("-")
+    hour, minute = time.split(":")
+
+    elist[i].event_name = name
+    elist[i].date = {"year":year,"month":month,"day":day}
+    elist[i].time = {"Hour":hour,"Minutes":minute}
+    elist[i].event_detail = details
+    elist[i].event_timeleft = elist[i].calculate_time_left()
+
+    elist.sort(key=sort_dateToInt)
+
+    return elist.index(event)
+
+    '''
+    try: elist.remove(event)
+    except: return False
+
+    i = addEvent(elist, event, name, date, time, details)
+    '''
 
 def findTime(elist, keyDate, keyTime):
     """
@@ -82,29 +117,30 @@ def findName(elist, key):
         if elist[i].event_name == key:
             return i
 
+def delete(elist, event):
+    '''
+    Returns True if event was successfully found and deleted.
+    If event wasn't in the list to begin with, returns False.
+    '''
+    if event in elist:
+        elist.remove(event)
+        return True
+    
+    else: return False
+
 #--------------------------------------------------------
 # File communication
-def eventToDict(event):
-    '''
-    Turns an event object into a dictionary. 
-    Returns the dictionary.
-    '''
-    date = event.get_date()
-    time = event.get_time()
-
-    dictionary = {'name':event.get_event_name(), 'year':date[0], 'month':date[1], 'day':date[2], \
-                  'hour':time[0],'minute':time[1], 'details':event.get_details()}
-
-    return dictionary
 
 def dictToEvent(d):
     '''
     Turns a dictionary into an event object.
     Returns the event object.
     '''
+    year, month, day = d['Date'].split('-')
+    hour, minute = d['Time'].split(':')
 
-    event = Event_class.Event_Schedule(d['name'], d['year'], d['month'], d['day'], d['hour'], \
-                                       d['minute'], d['details'])
+    event = Event_class.Event_Schedule(d['Event Name'], year, month, day, hour, \
+                                       minute, d['Detail'])
 
     return event
 
@@ -114,10 +150,10 @@ if __name__ == '__main__':
     print(TITLE)
 
     l = []
-    e = l[addEvent(l, "Class", '2022', '11', '19', '14', '20', "Hell in a handbasket")]
-    v = l[addEvent(l, "Vacay", '2022', '11', '21', '12', '20', "Cya l8r losers")]
-    n = l[addEvent(l, "Board", '2022', '11', '21', '12', '00', "Be early")]
-    t = l[addEvent(l, "Wakup", '2022', '11', '21', '07', '30', "Bacon 4 brkfst")]
+    e = l[addEvent(l, "Class", '2022-11-19', '14:20', "Hell in a handbasket")]
+    v = l[addEvent(l, "Vacay", '2022-11-21', '12:20', "Cya l8r losers")]
+    n = l[addEvent(l, "Board", '2022-11-21', '12:00', "Be early")]
+    t = l[addEvent(l, "Wakup", '2022-11-21', '07:30', "Bacon 4 brkfst")]
     
     print()
 
@@ -126,10 +162,12 @@ if __name__ == '__main__':
 
     print()
 
+    '''
     print("Testing comparisons:")
     print(earlier(e, v), equals(e, v), later(e, v))
     print(earlier(v, n), equals(v, n), later(v, n))
     print(earlier(n, t), equals(n, t), later(n, t))
+    '''
 
     print()
 
@@ -143,7 +181,7 @@ if __name__ == '__main__':
     print()
 
     print("Testing eventToDict")
-    diction = eventToDict(e)
+    diction = e.write_dict()
     print(diction)
 
     print("Testing dictToEvent")
@@ -151,4 +189,21 @@ if __name__ == '__main__':
     event = dictToEvent(diction)
     print(event.get_event_name(), event.get_date(), event.get_time(), event.get_details())
 
+    '''
+    print()
 
+    print("Testing remove:")
+    delete(l, n)
+    delete(l, e)
+    delete(l, n)
+    for i in range(len(l)):
+        print(l[i].event_name)
+    '''
+    print()
+
+    print("Testing edit")
+    i = edit(l, e, "Class", "2023-11-19", "14:20", "Next sem")
+    for i in range(len(l)):
+        print(l[i].event_name)
+    print(i, '.', l[i].get_event_name(), l[i].get_date(), l[i].get_time(), l[i].get_details())
+    print(l.index(e))
