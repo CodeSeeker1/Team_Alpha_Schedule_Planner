@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>uploadTest</title>
+
+    <!-- pyscript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <!-- upload buttons -->
+    <input type="file" id="uploadfile" accept=".csv">
+    <button id="test" type="button" py-onClick="fileUpload()">Upload</button>
+
+    <button id="beep" type="button" py-onClick="fileDownload()">Download</button>
+
+    <!-- csv parser -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="fileManagement.js"></script>
+
+        <py-env>
+        - paths:
+          - /buttons.py
+          - /Event_class.py
+          - /Event_list.py
+      </py-env>
+
+</head>
+<body>
+
+    <div id="events"></div> <!-- container for event divs -->
+
+        <!-- form sample -->
+    <div class="testbox">
+      <form onsubmit="return false">
+        Enter Event: <br>
+        <label for="name">Name:</label><br>
+        <input id="name" type="text" name="name" required><br>
+
+        <label for="date">Date:</label><br>
+        <input id="date" type="date" name="date" required><br>
+        <i class="fas fa-calendar-alt"></i>
+
+        <label for="time">Time:</label><br>
+        <input id="time" type="time" name="time" required>
+        <i class="fas fa-clock"></i><br>
+
+        <label for="details">Details:</label><br>
+        <textarea id="details" rows="3"></textarea><br>
+
+        <input type="submit" id="btn-form" value="submit" py-onClick="formData()">
+      </form>
+    </div>
+
+        <p>Output:</p>
+    <p id = 'output'></p>
+
+    <py-script>
+        import js
+        from buttons import hello
+        import Event_class
+        import Event_list
+        from pyodide.ffi import to_js
+        #import asyncio
+
+        eventsData = {}
+        l = []
+
+        def formData(*args, **kwargs):
+            #add check if required fields are filled out before going forward, if not dont do anything
+            result_place = Element('output')
+            date = (Element('date').value).split("-")
+            time = (Element('time').value).split(":")
+            result_place.write(Element('name').value +" "+ Element('date').value +" "+ Element('time').value +" "+ Element('details').value)
+            l[Event_list.addEvent(l, Element('name').value, date[0], date[1], date[2], time[0], time[1], Element('details').value)]
+            displayEvents(l)
+
+        def fileUpload():
+            global eventsData 
+            global l
+            eventsData = js.fileUpload().to_py()
+            Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
+            for i in range(len(eventsData)):
+                l[Event_list.addEvent(l, eventsData[i]['name'], eventsData[i]['year'], eventsData[i]['month'], eventsData[i]['day'], eventsData[i]['hour'], eventsData[i]['minute'], eventsData[i]['details'])]
+
+            displayEvents(l)
+            #displayEvents(eventsData)
+
+        def fileDownload():
+            js.fileDownload(to_js(eventsData))
+
+        def displayEvents(l):
+            events = document.getElementById('events')
+            events.innerHTML = ''
+            for i in range(len(l)):
+                #div container for event divs
+                event = document.createElement("div")
+                event.className = "event"
+
+                #event number div
+                eventNumber = document.createElement("div"); 
+                eventNumber.className = "eventNumber"
+                eventNumber.innerHTML += "#" + str(i+1)
+                event.appendChild(eventNumber)
+
+                #event name div
+                eventName = document.createElement("div"); 
+                eventName.className = "eventName"
+                eventName.innerHTML += l[i].event_name
+                event.appendChild(eventName)
+
+                #event name div
+                eventDetails = document.createElement("div"); 
+                eventDetails.className = "eventDetails"
+                eventDetails.innerHTML += l[i].event_detail
+                event.appendChild(eventDetails)
+
+                #displays event
+                document.getElementById('events').appendChild(event)
+
+
+
+
+    </py-script>
+
+</body>
+</html>
