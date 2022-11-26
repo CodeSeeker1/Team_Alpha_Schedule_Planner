@@ -34,6 +34,7 @@ class Event_Schedule():
     def calculate_time_left(self):
         """
         Calculates the time left from current time and date, to the date and time of the event
+        returns the result in this format: # days, hours:mins:seconds
         """
         import datetime
         today = datetime.date.today()
@@ -72,11 +73,10 @@ class Event_Schedule():
         event_name = "{}".format(self.event_name)
         date = "{}-{}-{}".format(yr,mon,day)
         time = "{}:{}".format(hr,min)
-        time_left = "{}".format(self.event_timeleft)
         detail = "{}".format(self.event_detail)
 
         #dictionary format
-        event_dict = {"Event Name":event_name,"Date":date,"Time":time,"Time Left":time_left,"Detail":detail}
+        event_dict = {"Event Name":event_name,"Date":date,"Time":time,"Detail":detail}
         return event_dict
 
     
