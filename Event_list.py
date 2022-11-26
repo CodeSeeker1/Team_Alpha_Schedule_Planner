@@ -1,4 +1,4 @@
-TITLE = "Event_list.py 1.01 2022-11-19"
+TITLE = "Event_list.py 1.07 2022-11-26"
 """-----------------------------------------------------
 Functions to add, delete, and sort
 a list of Event_Schedule objects.
@@ -15,7 +15,7 @@ import Event_class
 # Comparisons, may move to class
 
 def sort_dateToInt(event):
-    "Returns the datToInt of event. Used for sorting"
+    "Returns the datToInt of event."
     return str(event.dateToInt())
 
 def earlier(lEvent, rEvent):
@@ -30,7 +30,35 @@ def later(lEvent, rEvent):
     "Returns True if lEvent is after rEvent"
     return lEvent.dateToInt() > rEvent.dateToInt()
 
-#--------------------------------------------------------
+#---------------------------------------------------------
+def errorChecking(name, date, time):
+    '''
+    Ensures that the parameters given are in proper format.
+
+    Used internally for addEvent.
+
+    Returns 1 if no errors are found.
+    Returns -2 if there is an error in name.
+    Returns -3 if there is an error in time.
+    '''
+
+    for c in name:
+        if c != ' ': break
+        return -2
+    
+    if name == "": return -2
+    
+    if ':' not in time:
+        return -3
+    
+    hour, minute = time.split(":")
+
+    if (not(hour.isnumeric() and minute.isnumeric() and len(hour) == 2 and len(minute) ==2)):
+        return -3
+
+    return 1
+
+#---------------------------------------------------------
 # Adding, searching, deleting and editing
 def addEvent(elist, name, date, time, details):
     """
@@ -40,7 +68,15 @@ def addEvent(elist, name, date, time, details):
 
     Adds event object to list and sorts it based on date and time.
     returns index of event object.
+    
+    Returns a negative number if an error occurs:
+    -1: Event Creation failed
+    -2: name is empty
+    -3: time is in a bad format
     """
+    error = errorChecking(name, date, time)
+    if error != 1: return error
+
     year, month, day = date.split("-")
     hour, minute = time.split(":")
 
@@ -56,9 +92,17 @@ def addEvent(elist, name, date, time, details):
     return elist.index(event)
 
 def edit(elist, event, name, date, time, details):
+    '''
+    Takes a list, event, and event parameters.
+    Modifies the values in event to be in line with name, date, time, details.
+    Sorts the list afterwards.
+
+    Returns new index of event.
+    Returns -1 if event is not in the list.
+    '''
 
     if event not in elist:
-        return False
+        return -1
     
     i = elist.index(event)
 
@@ -81,6 +125,17 @@ def edit(elist, event, name, date, time, details):
 
     i = addEvent(elist, event, name, date, time, details)
     '''
+
+def delete(elist, event):
+    '''
+    Returns True if event was successfully found and deleted.
+    If event wasn't in the list to begin with, returns False.
+    '''
+    if event in elist:
+        elist.remove(event)
+        return True
+    
+    else: return False
 
 def findTime(elist, keyDate, keyTime):
     """
@@ -117,18 +172,7 @@ def findName(elist, key):
         if elist[i].event_name == key:
             return i
 
-def delete(elist, event):
-    '''
-    Returns True if event was successfully found and deleted.
-    If event wasn't in the list to begin with, returns False.
-    '''
-    if event in elist:
-        elist.remove(event)
-        return True
-    
-    else: return False
-
-#--------------------------------------------------------
+#---------------------------------------------------------
 # File communication
 
 def dictToEvent(d):
@@ -144,7 +188,21 @@ def dictToEvent(d):
 
     return event
 
-#--------------------------------------------------------
+'''
+def dictToEvent_List(dL):
+    
+    dl is a list of dictionaries.
+
+    Creates a list of events out of a list of dictionaries.
+
+    Returns the list of events.
+    
+    l = []
+    
+    for d in dL:
+'''    
+
+#---------------------------------------------------------
 # Testing
 if __name__ == '__main__':
     print(TITLE)
@@ -207,3 +265,11 @@ if __name__ == '__main__':
         print(l[i].event_name)
     print(i, '.', l[i].get_event_name(), l[i].get_date(), l[i].get_time(), l[i].get_details())
     print(l.index(e))
+
+    print()
+
+    print("Testing error checking:")
+    print(addEvent(l, " ", "2022-11-26", "16:26", "Hey"))
+    print(addEvent(l, "",  "2022-11-26", "16:26", "Hey"))
+    print(addEvent(l, "Test",  "2022-11-26", "16 26", "Hey"))
+    print(addEvent(l, "Test",  "2022-11-26", "4:26", "Hey"))
