@@ -47,19 +47,26 @@ def addEvent(elist,name,year,month,day,hour,minute,details):
 
     return findName(elist, name)
 
-def findTime(elist, key):
+def findTime(elist, keyDate, keyTime):
     """
     elist is a list of events.
-    key is the time integer of the event.
-    It is assumed elist is sorted by date and time.
+    keyDate is a string representing the date. ex: 2022-11-26
+    keyTime is a string representing the time.
+    It is assumed elist is sorted by date and time. ex: 11:13
 
     Returns the index of the matching time.
 
     May build a more efficient binary search if time permits.
     """
     for i in range(len(elist)):
-        if elist[i].dateToInt == key:
+        date = elist[i].get_date()
+        time = elist[i].get_time()
+
+        strDate = date[0] + '-' + date[1] + '-' + date[2]
+        strTime = time[0] + ':' + time[1]
+        if strDate == keyDate and strTime == keyTime:
             return i
+        
 
 def findName(elist, key):
     """
