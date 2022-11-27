@@ -1,4 +1,4 @@
-TITLE = "Event_list.py 1.07 2022-11-26"
+TITLE = "Event_list.py 1.10 2022-11-26"
 """-----------------------------------------------------
 Functions to add, delete, and sort
 a list of Event_Schedule objects.
@@ -137,8 +137,11 @@ def delete(elist, event):
     
     else: return False
 
+
 def findTime(elist, keyDate, keyTime):
     """
+    INCOMPLETE! MAY SCRAP!
+
     elist is a list of events.
     keyDate is a string representing the date. ex: 2022-11-26
     keyTime is a string representing the time.
@@ -160,6 +163,7 @@ def findTime(elist, keyDate, keyTime):
 
 def findName(elist, key):
     """
+    INCOMPLETE! MAY SCRAP!
     elist is a list of events.
     key is the time integer of the event.
     It is assumed elist is sorted by date and time.
@@ -175,32 +179,60 @@ def findName(elist, key):
 #---------------------------------------------------------
 # File communication
 
-def dictToEvent(d):
+# def dictToEvent(l, d):
     '''
+    l is a list, d is a dictionary.
+
     Turns a dictionary into an event object.
-    Returns the event object.
+    Adds it to l with addEvent.
+    Returns True if successful, False is an error occured.
+    '''
+
     '''
     year, month, day = d['Date'].split('-')
     hour, minute = d['Time'].split(':')
 
     event = Event_class.Event_Schedule(d['Event Name'], year, month, day, hour, \
                                        minute, d['Detail'])
+    
 
     return event
+    '''
 
-'''
-def dictToEvent_List(dL):
-    
+def dictToList(dL, l = []):
+    '''
     dl is a list of dictionaries.
+    l is a list of events.
+    If no list is entered, this function creates an empty list.
 
-    Creates a list of events out of a list of dictionaries.
+    Creates or updates a list of events out of a list of dictionaries.
 
-    Returns the list of events.
-    
-    l = []
-    
+    Returns the list of events, and the number of failed addEvents.
+    '''
+    failed = 0
+
     for d in dL:
-'''    
+        i = addEvent(l, d['Event Name'], d['Date'], d['Time'], d['Detail'])
+        if i < 0: failed += 1
+    
+    return l, failed
+
+def listToDict(l):
+    '''
+    l is a list of events.
+
+    Creates a list of dictionaries, created from the list of events.
+
+    Returns the list of dictionaries.
+    '''
+    dl = []
+
+    for e in l:
+        dl.append(e.write_dict())
+    
+    return dl
+    
+    
 
 #---------------------------------------------------------
 # Testing
@@ -238,14 +270,42 @@ if __name__ == '__main__':
 
     print()
 
-    print("Testing eventToDict")
-    diction = e.write_dict()
-    print(diction)
+    print("Testing dictToList")
+    diction1 = e.write_dict()
+    diction2 = v.write_dict()
+    diction3 = t.write_dict()
 
-    print("Testing dictToEvent")
-    diction['name'] = 'Midterm'
-    event = dictToEvent(diction)
-    print(event.get_event_name(), event.get_date(), event.get_time(), event.get_details())
+    print(diction1, '\n', diction2, '\n', diction3)
+
+    dl = [diction1, diction2, diction3]
+    
+    evl, report = dictToList(dl)
+    for event in evl:
+        print(event.event_name)
+    
+    print(report)
+
+    diction1['Event Name'] = "Midterm"
+    diction1['Date'] = "2022-10-07"
+
+    diction2['Event Name'] = "Breakfast"
+    diction2['Time'] = "09:00"
+
+    diction3['Event Name'] = "Brunch"
+    diction3['Time'] = "10:0"
+
+    evl, report = dictToList(dl, evl)
+    for event in evl:
+        print(event.event_name)
+    
+    print(report)
+
+    print()
+
+    print("Testing listToDict")
+
+    dl2 = listToDict(evl)
+    print(dl2)
 
     '''
     print()
@@ -263,6 +323,7 @@ if __name__ == '__main__':
     i = edit(l, e, "Class", "2023-11-19", "14:20", "Next sem")
     for i in range(len(l)):
         print(l[i].event_name)
+    
     print(i, '.', l[i].get_event_name(), l[i].get_date(), l[i].get_time(), l[i].get_details())
     print(l.index(e))
 
@@ -273,3 +334,4 @@ if __name__ == '__main__':
     print(addEvent(l, "",  "2022-11-26", "16:26", "Hey"))
     print(addEvent(l, "Test",  "2022-11-26", "16 26", "Hey"))
     print(addEvent(l, "Test",  "2022-11-26", "4:26", "Hey"))
+
