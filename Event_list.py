@@ -16,7 +16,7 @@ import Event_class
 
 def sort_dateToInt(event):
     "Returns the datToInt of event."
-    return str(event.dateToInt())
+    return event.dateToInt()
 
 def earlier(lEvent, rEvent):
     "Returns True if lEvent is before rEvent"
@@ -53,7 +53,7 @@ def errorChecking(name, date, time):
     
     hour, minute = time.split(":")
 
-    if (not(hour.isnumeric() and minute.isnumeric() and len(hour) == 2 and len(minute) ==2)):
+    if (not(hour.isnumeric() and minute.isnumeric())):
         return -3
 
     return 1
@@ -79,6 +79,9 @@ def addEvent(elist, name, date, time, details):
 
     year, month, day = date.split("-")
     hour, minute = time.split(":")
+    if len(hour)   == 1: hour   = '0' + hour
+    if len(minute) == 1: minute = '0' + minute
+    print(hour)
 
     try:
         event = Event_class.Event_Schedule(name,year,month,day,hour,minute,details)

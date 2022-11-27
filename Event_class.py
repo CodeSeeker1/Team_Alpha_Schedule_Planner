@@ -37,7 +37,7 @@ class Event_Schedule():
             mon = "12"
             year-= year
         
-        return yr,mon,day
+        return str(yr), str(mon), str(day)
 
     def get_details(self):
         return (self.event_detail)
@@ -45,7 +45,8 @@ class Event_Schedule():
     def get_time(self):
         hour = self.time["Hour"]
         min = self.time["Minutes"]
-        modified_hour = int(hour) - 1 
+        modified_hour = str(int(hour) - 1)
+        if len(modified_hour) == 1: modified_hour = '0' + modified_hour
         
         return str(modified_hour),min
 
