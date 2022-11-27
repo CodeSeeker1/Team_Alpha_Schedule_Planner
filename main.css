@@ -91,10 +91,6 @@ input,button{
 #new-task-submit:active{
     opacity: 0.6;
 }
-.text{
-    background-color: #a6cbc8;
-    border-radius: 5px;
-}
 .task-list{
     padding: auto;
     margin-top: 1.4cm;
@@ -109,4 +105,13 @@ input,button{
     border-radius: 20px;
     margin-top: 0.5cm;
     color: grey;
+}
+
+.eventName{
+    color:black;
+    font-weight: 700;
+    background-color: #a6cbc8;
+    border-radius: 5px;
+    height: 25px; 
+    width: 290px;
 }
