@@ -69,7 +69,7 @@
         def formData(*args, **kwargs):
             #add check if required fields are filled out before going forward, if not dont do anything
             result_place = Element('output')
-            result_place.write(Element('new-task-input').value +" "+ Element('date').value +" "+ Element('time').value +" "+ Element('details').value)
+            #result_place.write(Element('new-task-input').value +" "+ Element('date').value +" "+ Element('time').value +" "+ Element('details').value)
             l[Event_list.addEvent(l, Element('new-task-input').value, Element('date').value, Element('time').value, Element('details').value)]
             displayEvents(l)
 
@@ -84,7 +84,11 @@
             displayEvents(l)
 
         def fileDownload():
-            js.fileDownload(to_js(eventsData))
+            global l
+            csvlist = []
+            for i in range(len(l)):
+                csvlist.append(l[i].write_dict())
+            js.fileDownload(to_js(csvlist))
 
         def displayEvents(l):
             events = document.getElementById('events')
