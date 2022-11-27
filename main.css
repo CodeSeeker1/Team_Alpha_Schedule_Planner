@@ -1,0 +1,112 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    margin-left: 23%;
+    margin-top: 2cm;
+    background-image: linear-gradient(to right,#109A8D,#043E38);
+    color: #a6cbc8
+}
+.details{
+    background-color: #111827;
+    margin-right: 8cm;
+    margin-top: 2;
+
+}
+header{
+    padding: 2rem 1rem;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+header h1{
+    font-size: 3rem;
+    font-weight: 300;
+    color: #111827;
+    margin-bottom: 2rem;
+}
+#new-input-form{
+    display: flex;
+}
+input,button{
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+}
+.details{
+    background-color: #111827;
+    margin-right: 8cm;
+    margin-top: 2;
+}
+.edit{
+    background-color: black;
+    color:white;
+    border-radius: 5px;
+    width: 34px;
+    height: 18px;
+    transition: opacity 0.5s;
+}
+.edit.edit:hover{
+    opacity: 0.7;
+
+}
+.delete{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 50px;
+    height: 18px;
+    transition: opacity 0.5s;
+}
+#new-task-input{
+    flex: 1 1 0%;
+    background-color: #111827;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    color: grey;
+    font-size: 1.25rem;
+}
+#new-task-input::placeholder{
+    color: grey;
+}
+#new-task-submit{
+    font-size: 1.25rem;
+    font-weight: 650;
+    background-color: grey;
+    opacity: 0.8;
+    border-radius: 20px;
+    color: black;
+    cursor: pointer;
+    transition: 0.5;
+}
+#new-task-submit:hoover{
+    opacity:  0.8;
+}
+#new-task-submit:active{
+    opacity: 0.6;
+}
+.text{
+    background-color: #a6cbc8;
+    border-radius: 5px;
+}
+.task-list{
+    padding: auto;
+    margin-top: 1.4cm;
+}
+.task-list h2{
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+.details{
+    flex: 1 1 0%;
+    border-radius: 20px;
+    margin-top: 0.5cm;
+    color: grey;
+}
