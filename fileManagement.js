@@ -38,9 +38,9 @@ function fileUpload() {
 // var csv = Papa.unparse(eventObj);
 // }
 
-function fileDownload() { 
-    var csv = Papa.unparse(eventObj); 
-    console.log(eventObj);
+function fileDownload(csvlist) { 
+    var csv = Papa.unparse(csvlist); 
+    console.log(csvlist);
     filename = "Events" //add parameter for uploading later 
     var csvFile;  
     var downloadLink;  
@@ -55,3 +55,4 @@ function fileDownload() {
     document.body.appendChild(downloadLink);  
     downloadLink.click();  
 }  
+
