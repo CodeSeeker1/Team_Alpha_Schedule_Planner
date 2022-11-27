@@ -45,8 +45,9 @@ class Event_Schedule():
     def get_time(self):
         hour = self.time["Hour"]
         min = self.time["Minutes"]
-
-        return hour,min
+        modified_hour = int(hour) - 1 
+        
+        return str(modified_hour),min
 
     def calculate_time_left(self):
         """
@@ -80,7 +81,7 @@ class Event_Schedule():
         integer =  date[0] + date[1] + date[2] 
         integer += time[0] + time[1]
 
-        return int(integer)
+        return integer
 
     def write_dict(self):
 
