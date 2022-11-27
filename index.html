@@ -5,70 +5,128 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task </title>
+
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <link rel="stylesheet" href="main.css" />
+
+        <!-- pyscript -->
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-env>
+        - paths:
+          - /Event_class.py
+          - /Event_list.py
+    </py-env>
+
 </head>
 <body>
+
     <head class="head">
         <h1> Schedule List</h1>
-        <form id="new-task">
-            <input type="text"
-            class="class-box"
-            id="new-task-input"
-            placeholder="Add a task" />
-            <input
-            type="submit"
-            id="new-task-submit"
-            />
-            <input 
-            type="datetime-local"
-            />
-            <label style="color:black;font-weight: 700;">Date</label>
-           
-           
 
-        </form>
-        </head>
-        <form>
-            <input
-        class="details"
-        type="search"
-        style="height: 28px; width: 500px;"
-        placeholder="Add details"
-        
-        />
-        <span style="margin-right:500px;font-weight: bold;color: black;font-weight: 700;">Details</span>
-        <input>
+        <!-- upload/download buttons -->
+        <input type="file" id="uploadfile" accept=".csv">
+        <button id="upload" type="button" py-onClick="fileUpload()">Upload</button>
 
-        </form>
+        <button id="download" type="button" py-onClick="fileDownload()">Download</button>
 
-        
-          
+        <!-- csv parser -->
+        <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+        <script src="fileManagement.js"></script>
+
+
+        <form id="new-task" onsubmit="return false">
+            <input id="new-task-input" class="class-box" type="text" name="name" placeholder="Add a task" required>
+
+            <label for="date" style="color:black;font-weight: 700;">Date:</label>
+            <input id="date" type="date" name="date" required>
+            <i class="fas fa-calendar-alt"></i>
+
+            <label for="time" style="color:black;font-weight: 700;">Time:</label>
+            <input id="time" type="time" name="time" required>
+            <i class="fas fa-clock"></i><br>
+
+            <textarea class="details" id="details" rows="3" style="width: 500px;" placeholder="Add details"></textarea><br>
+
+            <input type="submit" id="new-task-submit" value="submit" py-onClick="formData()">
+        </form>  
     </head>
     <main> 
         <section class="task-list" > 
             <h2>Tasks</h2>
-            <div id="task ">
-                <div class="tasks">
-                    <div class="contents">
-                        <input 
-                        type= "text"
-                        class="text"
-                        value="only tasks"
-                        style="height: 25px; width: 290px;"
-                        readonly
-                        />
-
-                    </div>
-                    <div class="actions">
-                        <button class="edit">Edit</button>
-                        <button class="delete">Delete</button>
-                    </div>
-
-                </div>
-
-            </div>
+                <div id="events" class="contents"></div>
         </section>
     </main>
-    <script src=""></script>
+
+    <py-script>
+        import js
+        import Event_class
+        import Event_list
+        from pyodide.ffi import to_js
+
+        eventsData = {}
+        l = []
+
+        def formData(*args, **kwargs):
+            #add check if required fields are filled out before going forward, if not dont do anything
+            result_place = Element('output')
+            result_place.write(Element('new-task-input').value +" "+ Element('date').value +" "+ Element('time').value +" "+ Element('details').value)
+            l[Event_list.addEvent(l, Element('new-task-input').value, Element('date').value, Element('time').value, Element('details').value)]
+            displayEvents(l)
+
+        def fileUpload():
+            global eventsData 
+            global l
+            eventsData = js.fileUpload().to_py()
+            #Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
+            for i in range(len(eventsData)):
+                l[Event_list.addEvent(l, eventsData[i]['name'], eventsData[i]['date'], eventsData[i]['time'], eventsData[i]['details'])]
+
+            displayEvents(l)
+
+        def fileDownload():
+            js.fileDownload(to_js(eventsData))
+
+        def displayEvents(l):
+            events = document.getElementById('events')
+            events.innerHTML = ''
+            for i in range(len(l)):
+                #div container for event divs
+                event = document.createElement("div")
+                event.className = "event"
+
+                #event name div
+                eventName = document.createElement("div"); 
+                eventName.className = "eventName"
+                eventName.innerHTML += l[i].event_name
+                event.appendChild(eventName)
+
+                #event details div
+                eventDetails = document.createElement("div"); 
+                eventDetails.className = "eventDetails"
+                eventDetails.innerHTML += l[i].event_detail
+                event.appendChild(eventDetails)
+
+                #buttons
+                actions = document.createElement("div"); 
+                actions.className = "actions"
+
+                #edit button
+                edit = document.createElement("button")
+                edit.className = "edit"
+                edit.innerHTML += "Edit"
+                actions.appendChild(edit)
+
+                #delete button
+                delete = document.createElement("button")
+                delete.className = "delete"
+                delete.innerHTML += "Delete"
+                actions.appendChild(delete)
+
+                event.appendChild(actions)
+
+                #displays event
+                document.getElementById('events').appendChild(event)
+
+    </py-script>
 </body>
 </html>
