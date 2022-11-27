@@ -17,9 +17,26 @@ class Event_Schedule():
         return(self.event_name)
 
     def get_date(self):
-        yr = self.date["year"]
-        mon = self.date["month"]
-        day = self.date["day"]
+        yr = int(self.date["year"])
+        mon = int(self.date["month"])
+        day = int(self.date["day"])
+        daysinmonth_list = {0,31,28,31,30,31,30,31,31,30,31,30,31}
+        
+        #in case the hour is 0
+        hr = self.time["Hour"]
+        if ( hr == "0"):
+            day -= day
+        
+        #in case the day is 0
+        if (day == "0"):
+            mon -= mon
+            day = dayinmonth_list[month]
+          
+        #in case the month is 0
+        if (mon == "0"):
+            mon = "12"
+            year-= year
+        
         return yr,mon,day
 
     def get_details(self):
