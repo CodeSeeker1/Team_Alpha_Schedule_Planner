@@ -34,13 +34,17 @@ function fileUpload() {
     return eventObj;
 }
 
-// function fileDownload(eventObj) {   
-// var csv = Papa.unparse(eventObj);
-// }
-
 function fileDownload(csvlist) { 
-    var csv = Papa.unparse(csvlist); 
-    console.log(csvlist);
+    array = Array.from(csvlist, ([name, date, time, details]) => ({ name, date, time, details }));
+
+    for (i = 0; i < array.length; i++) {
+        array[i].name = array[i].name[1]
+        array[i].date = array[i].date[1]
+        array[i].time = array[i].time[1]
+        array[i].details = array[i].details[1]
+    }
+    console.log(array);
+    var csv = Papa.unparse(array); 
     filename = "Events" //add parameter for uploading later 
     var csvFile;  
     var downloadLink;  
@@ -55,4 +59,3 @@ function fileDownload(csvlist) {
     document.body.appendChild(downloadLink);  
     downloadLink.click();  
 }  
-
