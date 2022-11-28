@@ -47,7 +47,7 @@
 
             <textarea class="details" id="details" rows="3" style="width: 500px;" placeholder="Add details"></textarea><br>
 
-            <input type="submit" id="new-task-submit" value="submit" py-onClick="formData()">
+            <input type="submit" id="new-task-submit" value="submit" py-onClick="formData()" required>
         </form>  
     </head>
     <main> 
@@ -67,11 +67,13 @@
         l = []
 
         def formData(*args, **kwargs):
-            #add check if required fields are filled out before going forward, if not dont do anything
-            result_place = Element('output')
-            #result_place.write(Element('new-task-input').value +" "+ Element('date').value +" "+ Element('time').value +" "+ Element('details').value)
-            l[Event_list.addEvent(l, Element('new-task-input').value, Element('date').value, Element('time').value, Element('details').value)]
-            displayEvents(l)
+            if Element('new-task-input').value and Element('date').value and Element('time').value and Element('details').value:
+                l[Event_list.addEvent(l, Element('new-task-input').value, Element('date').value, Element('time').value, Element('details').value)]
+                displayEvents(l)
+                document.getElementById('new-task-input').value = ''
+                document.getElementById('date').value = ''
+                document.getElementById('time').value = ''
+                document.getElementById('details').value = ''
 
         def fileUpload():
             global eventsData 
@@ -87,7 +89,7 @@
             global l
             csvlist = []
             for i in range(len(l)):
-                csvlist.append(l[i].write_dict())
+                csvlist.append(to_js(l[i].write_dict()))
             js.fileDownload(to_js(csvlist))
 
         def displayEvents(l):
