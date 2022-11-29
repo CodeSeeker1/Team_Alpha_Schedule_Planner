@@ -98,12 +98,17 @@ h2{
     color:black;
     background-color:#a6cbc8;
     font-weight: 700;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+    padding: 5px;
 }
 
 .time{
     color:black;
     background-color:#a6cbc8;
     font-weight: 700;
+    border-radius: 0.5rem;
+    padding: 5px;
 }
 
 .name-date-time-wrapper{
