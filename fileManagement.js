@@ -3,11 +3,12 @@ const dateData = [];
 const timeData = [];
 const detailsData = [];
 
-const fileInput = document.getElementById('uploadfile');
+const fileInput = document.getElementById('file');
 fileInput.onchange = () => {
     //   const selectedFile = fileInput.files[0];
     //   console.log(selectedFile);
-    Papa.parse(document.getElementById('uploadfile').files[0],
+    try {
+        Papa.parse(document.getElementById('file').files[0],
         {
             download: true,
             header: true,
@@ -22,16 +23,26 @@ fileInput.onchange = () => {
                     detailsData.push(results.data[i].details)
                     }
 
-                    eventObj = results.data
+                    eventObj = results.data;
+                    document.getElementById('txt').value = document.getElementById('file').files[0]['name'];
+                    console.log(document.getElementById('file').files[0]['name']);
 
                 }
             })
+      }
+      catch(err) {
+        eventObj = [];
+      }
         
-        }
+}
 
 function fileUpload() { 
     // send file data to python
-    return eventObj;
+    try {
+        return eventObj;
+    }
+    catch(err) {
+      }
 }
 
 function fileDownload(csvlist) { 
