@@ -89,10 +89,29 @@ input,button{
     margin-top: 30px;
     margin-bottom: 30px;
 }
-.task-list h2{
+h2{
     font-size: 1.5rem;
     font-weight: 300;
 }
+
+.date{
+    color:black;
+    background-color:#a6cbc8;
+    font-weight: 700;
+}
+
+.time{
+    color:black;
+    background-color:#a6cbc8;
+    font-weight: 700;
+}
+
+.name-date-time-wrapper{
+    position: relative;
+    display: flex;
+    width: 500px;
+}
+
 .details{
     background-color: #111827;
     margin-right: 8cm;
@@ -105,11 +124,14 @@ input,button{
     padding: 5px;
 }
 
+/*event list items*/
 .event{
     background-color: #a6cbc8;
     border-radius: 5px;
     width: 290px;
     margin: 10px;
+    position: relative;
+    display: inline-block;
 }
 
 .eventName{
@@ -122,10 +144,41 @@ input,button{
     padding-left: 5px;
 }
 .timeLeft{
-    color:black;
+    background-color: #111827;
+    color:grey;
     font-weight: 700;
     padding-left: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
+
+/*dropdown*/
+  .dropdown {
+    display: none;
+    position: absolute;
+    background-color: #a6cbc8;
+    min-width: 290px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .event:hover .dropdown {
+    display: block;
+  }
+  
+  .eventDetails {
+    text-align: center;
+    color: #111827;
+    font-weight: 700;
+  }
+
+  .eventDate {
+    text-align: left;
+    padding-left: 5px;
+    color: #111827;
+    font-size: 0.75rem;
+  }
+
 
 /*upload download formatting*/
 .upload-wrapper{
