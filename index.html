@@ -24,10 +24,18 @@
         <h1> Schedule List</h1>
 
         <!-- upload/download buttons -->
-        <input type="file" id="uploadfile" accept=".csv">
-        <button id="upload" type="button" py-onClick="fileUpload()">Upload</button>
-
-        <button id="download" type="button" py-onClick="fileDownload()">Download</button>
+        <div class="upload-wrapper">
+            <div class="upload">
+                <button id="upload" style='color:#111827;font-weight: 700;' type="button" py-onClick="fileUpload()">Upload</button>
+            </div>
+            <div class="fileselect">
+                <input id="txt" type="text" value="Choose File" style='color: grey;font-weight: 700;text-overflow: ellipsis;width: 190px' onclick ="javascript:document.getElementById('file').click();">
+                <input id ="file" type="file" accept=".csv" style='visibility: hidden;'/>
+            </div>
+            <div class="download">
+                <button id="download" style='color:#111827;font-weight: 700;' type="button" py-onClick="fileDownload()">Download</button>
+            </div>
+        </div>
 
         <!-- csv parser -->
         <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
@@ -47,7 +55,7 @@
 
             <textarea class="details" id="details" rows="3" style="width: 500px;" placeholder="Add details"></textarea><br>
 
-            <input type="submit" id="new-task-submit" value="submit" py-onClick="formData()" required>
+            <input type="submit" id="new-task-submit" value="Submit" py-onClick="formData()" required>
         </form>  
     </head>
     <main> 
@@ -78,12 +86,13 @@
         def fileUpload():
             global eventsData 
             global l
-            eventsData = js.fileUpload().to_py()
-            #Element('events').write(eventsData) #displays eventsData just for reference, can be removed later
-            for i in range(len(eventsData)):
-                l[Event_list.addEvent(l, eventsData[i]['name'], eventsData[i]['date'], eventsData[i]['time'], eventsData[i]['details'])]
-
-            displayEvents(l)
+            try:
+                eventsData = js.fileUpload().to_py()
+                for i in range(len(eventsData)):
+                    l[Event_list.addEvent(l, eventsData[i]['name'], eventsData[i]['date'], eventsData[i]['time'], eventsData[i]['details'])]
+                displayEvents(l)
+            except:
+                print("no file selected")
 
         def fileDownload():
             global l
@@ -105,6 +114,12 @@
                 eventName.className = "eventName"
                 eventName.innerHTML += l[i].event_name
                 event.appendChild(eventName)
+
+                #time left div
+                timeLeft = document.createElement("div"); 
+                timeLeft.className = "timeLeft"
+                timeLeft.innerHTML += "Time Left: {}".format(l[i].event_timeleft)
+                event.appendChild(timeLeft)
 
                 #event details div
                 eventDetails = document.createElement("div"); 
