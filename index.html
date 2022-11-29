@@ -42,18 +42,26 @@
         <script src="fileManagement.js"></script>
 
 
+        <h2>Add Task</h2>
+        <!-- add task form -->
         <form id="new-task" onsubmit="return false">
-            <input id="new-task-input" class="class-box" type="text" name="name" placeholder="Add a task" required>
+            <div class="name-date-time-wrapper">
+                <input id="new-task-input" class="class-box" type="text" name="name" placeholder="Task Name" required>
 
-            <label for="date" style="color:black;font-weight: 700;">Date:</label>
-            <input id="date" type="date" name="date" required>
-            <i class="fas fa-calendar-alt"></i>
+                <div class="date">
+                    <label for="date">Date:</label>
+                    <input id="date" type="date" name="date" required>
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
 
-            <label for="time" style="color:black;font-weight: 700;">Time:</label>
-            <input id="time" type="time" name="time" required>
-            <i class="fas fa-clock"></i><br>
+                <div class="time">
+                    <label for="time">Time:</label>
+                    <input id="time" type="time" name="time" required>
+                    <i class="fas fa-clock"></i><br>
+                </div>
+            </div>
 
-            <textarea class="details" id="details" rows="3" style="width: 500px;" placeholder="Add details"></textarea><br>
+            <textarea class="details" id="details" rows="3" style="width: 500px;" placeholder="Details"></textarea><br>
 
             <input type="submit" id="new-task-submit" value="Submit" py-onClick="formData()" required>
         </form>  
@@ -118,15 +126,28 @@
                 #time left div
                 timeLeft = document.createElement("div"); 
                 timeLeft.className = "timeLeft"
-                timeLeft.innerHTML += "Time Left: {}".format(l[i].event_timeleft)
+                timeLeft.innerHTML += "{}".format(l[i].event_timeleft)
                 event.appendChild(timeLeft)
+
+
+                dropdown = document.createElement("div")
+                dropdown.className = "dropdown"
 
                 #event details div
                 eventDetails = document.createElement("div"); 
                 eventDetails.className = "eventDetails"
                 eventDetails.innerHTML += l[i].event_detail
-                event.appendChild(eventDetails)
+                dropdown.appendChild(eventDetails)
 
+                #event date and time div
+                eventDate = document.createElement("div"); 
+                eventDate.className = "eventDate"
+                eventDate.innerHTML += "{}-{}-{}, {}:{}".format(l[i].date["year"],l[i].date["month"],l[i].date["day"], l[i].time["Hour"],l[i].time["Minutes"])
+                dropdown.appendChild(eventDate)
+
+                event.appendChild(dropdown)
+
+                """
                 #buttons
                 actions = document.createElement("div"); 
                 actions.className = "actions"
@@ -144,6 +165,7 @@
                 actions.appendChild(delete)
 
                 event.appendChild(actions)
+                """
 
                 #displays event
                 document.getElementById('events').appendChild(event)
