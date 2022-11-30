@@ -369,6 +369,7 @@ if __name__ == '__main__':
     print("Testing get_modified_date:")
     ll = []
     addEvent(ll, "Happy New Years!", "2023-01-01", "00:00", "Pop the champagne")
+    addEvent(ll, "Testing?", "2022-12-12", "10:30", "Don't break please")
 
     for i in range(len(ll)):
         print(ll[i].get_date(), ll[i].get_modified_date(), ll[i].get_time(), ll[i].get_modified_time())
