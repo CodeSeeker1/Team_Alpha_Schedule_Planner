@@ -59,7 +59,13 @@ def errorChecking(name, date, time):
     return 1
 
 #---------------------------------------------------------
-# Adding, searching, deleting and editing
+# Adding, sorting, deleting and editing
+def sortName(elist):
+    elist.sort(key = lambda event: event.event_name.lower())
+
+def sortTime(elist):
+    elist.sort(key=sort_dateToInt)
+
 def addEvent(elist, name, date, time, details):
     """
     elist is a list of events. 
@@ -81,7 +87,6 @@ def addEvent(elist, name, date, time, details):
     hour, minute = time.split(":")
     if len(hour)   == 1: hour   = '0' + hour
     if len(minute) == 1: minute = '0' + minute
-    print(hour)
 
     try:
         event = Event_class.Event_Schedule(name,year,month,day,hour,minute,details)
@@ -118,7 +123,7 @@ def edit(elist, event, name, date, time, details):
     elist[i].event_detail = details
     elist[i].event_timeleft = elist[i].calculate_time_left()
 
-    elist.sort(key=sort_dateToInt)
+    sortTime(elist)
 
     return elist.index(event)
 
@@ -338,3 +343,22 @@ if __name__ == '__main__':
     print(addEvent(l, "Test",  "2022-11-26", "16 26", "Hey"))
     print(addEvent(l, "Test",  "2022-11-26", "4:26", "Hey"))
 
+    print()
+
+    print("Testing sortByName:")
+    
+    for i in range(len(l)):
+        print(l[i].event_name)
+    print()
+    sortName(l)
+    for i in range(len(l)):
+        print(l[i].event_name)
+    
+    addEvent(l, "tootles", "2002-04-12", "01:00", "Gnarly")
+    print()
+    for i in range(len(l)):
+        print(l[i].event_name)
+    print()
+    sortName(l)
+    for i in range(len(l)):
+        print(l[i].event_name)
