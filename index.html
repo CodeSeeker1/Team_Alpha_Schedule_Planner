@@ -140,12 +140,20 @@
                 eventName = document.createElement("div"); 
                 eventName.className = "eventName"
                 eventName.innerHTML += l[i].event_name
-                event.appendChild(eventName)
 
                 #time left div
                 timeLeft = document.createElement("div"); 
                 timeLeft.className = "timeLeft"
-                timeLeft.innerHTML += "{}".format(l[i].event_timeleft)
+                if l[i].calculate_time_left() == True:
+                    timeLeft.style = "color:grey;"
+                    eventName.style = "color:grey;"
+                    timeLeft.innerHTML += "Event Passed"
+                else:
+                    timeLeft.style = "color:#a6cbc8;"
+                    eventName.style = "color:#a6cbc8;"
+                    timeLeft.innerHTML += "{}".format(l[i].event_timeleft)
+
+                event.appendChild(eventName)
                 event.appendChild(timeLeft)
 
 
@@ -161,7 +169,8 @@
                 #event date and time div
                 eventDate = document.createElement("div"); 
                 eventDate.className = "eventDate"
-                eventDate.innerHTML += "{}-{}-{}, {}:{}".format(l[i].date["year"],l[i].date["month"],l[i].date["day"], l[i].time["Hour"],l[i].time["Minutes"])
+                hour, mi = l[i].get_modified_time()
+                eventDate.innerHTML += "{}-{}-{}, {}:{}".format(l[i].date["year"],l[i].date["month"],l[i].date["day"], hour, mi)
                 dropdown.appendChild(eventDate)
 
                 event.appendChild(dropdown)
