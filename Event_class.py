@@ -17,38 +17,32 @@ class Event_Schedule():
         return(self.event_name)
 
     def get_date(self):
-        yr = int(self.date["year"])
-        mon = int(self.date["month"])
-        day = int(self.date["day"])
-        daysinmonth_list = {0,31,28,31,30,31,30,31,31,30,31,30,31}
-        
-        #in case the hour is 0
-        hr = self.time["Hour"]
-        if ( hr == "0"):
-            day -= day
-        
-        #in case the day is 0
-        if (day == "0"):
-            mon -= mon
-            day = dayinmonth_list[month]
-          
-        #in case the month is 0
-        if (mon == "0"):
-            mon = "12"
-            year-= year
-        
-        return str(yr), str(mon), str(day)
+        yr = self.date["year"]
+        mon = self.date["month"]
+        day = self.date["day"]
+        return yr,mon,day
 
     def get_details(self):
         return (self.event_detail)
     
-    def get_time(self):
+    def get_modified_time(self):
+        """
+        purpose: Modifies the hour time by one hour behind of the set time for the bug feature of our program
+        """
+
         hour = self.time["Hour"]
         min = self.time["Minutes"]
         modified_hour = str(int(hour) - 1)
         if len(modified_hour) == 1: modified_hour = '0' + modified_hour
         
         return str(modified_hour),min
+    
+
+    def get_time(self):
+        hour = self.time["Hour"]
+        min = self.time["Minutes"]
+
+        return hour,min
 
     def calculate_time_left(self):
         """
@@ -66,6 +60,15 @@ class Event_Schedule():
         start_date = datetime.datetime.strptime(current_time,'%Y-%m-%d %H:%M')
         end_date = datetime.datetime.strptime(deadline, '%Y-%m-%d %H:%M')
         result = end_date-start_date
+
+
+        #In the case the day is passed, return True or else return the result
+        for i in str(result):
+            if(i=="-"):
+                return True
+
+        
+
         return result
 
     def dateToInt(self):
@@ -82,7 +85,7 @@ class Event_Schedule():
         integer =  date[0] + date[1] + date[2] 
         integer += time[0] + time[1]
 
-        return integer
+        return int(integer)
 
     def write_dict(self):
 
@@ -101,8 +104,11 @@ class Event_Schedule():
     
   
 # if __name__ == "__main__":
-#     eventname = Event_Schedule("Birthday","2023","11","15","7","30","None")
+#     '''
+#     ----For Testing purposes--------
+#     eventname = Event_Schedule("Birthday","2023","11","20","7","30","None")
+#     print(eventname.calculate_time_left())
 #     num = eventname.dateToInt()
 #     list1 = eventname.write_dict() 
-#     print(list1)
-
+#     print("\n",list1)
+#     '''
