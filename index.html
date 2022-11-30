@@ -92,7 +92,7 @@
         l = []
 
         def formData(*args, **kwargs):
-            if Element('new-task-input').value and Element('date').value and Element('time').value and Element('details').value:
+            if Element('new-task-input').value and Element('date').value and Element('time').value:
                 l[Event_list.addEvent(l, Element('new-task-input').value, Element('date').value, Element('time').value, Element('details').value)]
                 displayEvents(l)
                 document.getElementById('new-task-input').value = ''
