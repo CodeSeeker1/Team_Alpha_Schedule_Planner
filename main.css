@@ -117,6 +117,33 @@ h2{
     width: 500px;
 }
 
+.sortbydate{
+    background-color:#a6cbc8;
+    font-weight: 700;
+    border-radius: 0.5rem;
+}
+
+.sortbyname{
+    background-color:#a6cbc8;
+    font-weight: 700;
+    margin-right: 5px;
+    border-radius: 0.5rem;
+}
+.sortTitle{
+    font-weight: 700;
+    margin-right: 5px;
+    border-radius: 0.5rem;
+}
+
+.sortbuttons{
+    position: relative;
+    display: flex;
+    max-width: fit-content;
+    background-color: #111827;
+    padding: 2px;
+    border-radius: 0.5rem;
+}
+
 .details{
     background-color: #111827;
     margin-right: 8cm;
@@ -207,6 +234,6 @@ h2{
 }
 .download{
     background-color: #a6cbc8;
-    margin-left: 20px;
+    margin-left: 5px;
     border-radius: 0.5rem;
 }
