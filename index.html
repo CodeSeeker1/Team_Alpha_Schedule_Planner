@@ -69,6 +69,15 @@
     <main> 
         <section class="task-list" > 
             <h2>Tasks</h2>
+                <div class="sortbuttons">
+                    <div class="sortTitle" style='color:#a6cbc8;font-weight: 700;'>Sort By:</div>
+                    <div class="sortbyname">
+                        <button id="sortbyname" style='color:#111827;font-weight: 700;' py-onClick="nameSort()" type="button">Name</button>
+                    </div>
+                    <div class="sortbydate">
+                        <button id="sortbydate" style='color:#111827;font-weight: 700;' py-onClick="dateSort()" type="button">Date</button>
+                    </div>
+                </div>
                 <div id="events" class="contents"></div>
         </section>
     </main>
@@ -108,6 +117,16 @@
             for i in range(len(l)):
                 csvlist.append(to_js(l[i].write_dict()))
             js.fileDownload(to_js(csvlist))
+
+        def nameSort():
+            global l
+            Event_list.sortName(l)
+            displayEvents(l)
+
+        def dateSort():
+            global l
+            Event_list.sortTime(l)
+            displayEvents(l)
 
         def displayEvents(l):
             events = document.getElementById('events')
