@@ -362,3 +362,13 @@ if __name__ == '__main__':
     sortName(l)
     for i in range(len(l)):
         print(l[i].event_name)
+    
+    
+    print()
+
+    print("Testing get_modified_date:")
+    ll = []
+    addEvent(ll, "Happy New Years!", "2023-01-01", "00:00", "Pop the champagne")
+
+    for i in range(len(ll)):
+        print(ll[i].get_date(), ll[i].get_modified_date(), ll[i].get_time(), ll[i].get_modified_time())

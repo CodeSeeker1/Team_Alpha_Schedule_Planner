@@ -21,6 +21,32 @@ class Event_Schedule():
         mon = self.date["month"]
         day = self.date["day"]
         return yr,mon,day
+    
+    def get_modified_date(self):
+        monthDays = [29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        date = self.get_date()
+        yr, month, day = int(date[0]), int(date[1]), int(date[2])
+        time = self.get_modified_time()
+        hour, min = int(time[0]), int(time[1])
+
+        if hour == 23: 
+            day -= 1
+            if day == 0:
+                if yr % 4 == 0: day = monthDays[0]
+                else:           day = monthDays[month]
+                month -= 1
+                if month == 0:
+                    month = 12
+                    yr -= 1
+
+        yr    = str(yr)
+        month = str(month)
+        day   = str(day)
+
+        if len(month) == 1: month = "0" + 1
+        if len(day)   == 1: day   = "0" + 1
+
+        return yr,month,day
 
     def get_details(self):
         return (self.event_detail)
@@ -33,9 +59,12 @@ class Event_Schedule():
         hour = self.time["Hour"]
         min = self.time["Minutes"]
         modified_hour = str(int(hour) - 1)
+
+        if modified_hour == '-1': modified_hour = '23'
+
         if len(modified_hour) == 1: modified_hour = '0' + modified_hour
         
-        return str(modified_hour),min
+        return modified_hour,min
     
 
     def get_time(self):

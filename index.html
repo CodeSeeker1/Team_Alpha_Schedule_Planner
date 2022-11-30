@@ -170,7 +170,8 @@
                 eventDate = document.createElement("div"); 
                 eventDate.className = "eventDate"
                 hour, mi = l[i].get_modified_time()
-                eventDate.innerHTML += "{}-{}-{}, {}:{}".format(l[i].date["year"],l[i].date["month"],l[i].date["day"], hour, mi)
+                year, month, day = l[i].get_modified_date()
+                eventDate.innerHTML += "{}-{}-{}, {}:{}".format(year,month,day,hour,mi)
                 dropdown.appendChild(eventDate)
 
                 event.appendChild(dropdown)
